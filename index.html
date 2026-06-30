@@ -25,24 +25,15 @@ position:relative;
 /* الخريطة */
 
 #board{
-
 position:absolute;
 left:50%;
 top:50%;
-
 transform:translate(-50%,-50%);
-
 width:300px;
 height:300px;
-
 display:grid;
-
-grid-template-columns:
-repeat(3,1fr);
-
-grid-template-rows:
-repeat(3,1fr);
-
+grid-template-columns:repeat(3,1fr);
+grid-template-rows:repeat(3,1fr);
 }
 
 .cell{
@@ -52,502 +43,31 @@ border:none;
 /* القطع */
 
 .piece{
-
 position:absolute;
-
 width:110px;
-
 touch-action:none;
-
 user-select:none;
-
 -webkit-user-drag:none;
-
 z-index:10;
-
-transition:
-transform .2s ease;
-
-filter:
-drop-shadow(
-0 8px 10px rgba(0,0,0,.5)
-);
-
+transition:transform .2s ease;
+filter:drop-shadow(0 8px 10px rgba(0,0,0,.5));
 }
 
 .piece:active{
-
 transform:scale(1.05);
-
 }
 
 /* توزيع القطع */
 
-#p1{
-left:10px;
-top:50px;
-transform:rotate(-12deg);
-}
-
-#p2{
-left:25px;
-top:80px;
-transform:rotate(8deg);
-}
-
-#p3{
-left:15px;
-top:120px;
-transform:rotate(-5deg);
-}
-
-#p4{
-left:35px;
-top:160px;
-transform:rotate(12deg);
-}
-
-#p5{
-right:10px;
-top:50px;
-transform:rotate(10deg);
-}
-
-#p6{
-right:25px;
-top:80px;
-transform:rotate(-9deg);
-}
-
-#p7{
-right:15px;
-top:120px;
-transform:rotate(6deg);
-}
-
-#p8{
-right:35px;
-top:160px;
-transform:rotate(-12deg);
-}
-
-#p9{
-left:50%;
-top:30px;
-transform:
-translateX(-50%)
-rotate(5deg);
-}
-
-/* حرف A */
-
-#letterA{
-
-position:fixed;
-
-left:50%;
-top:50%;
-
-transform:translate(-50%,-50%);
-
-font-size:30px;
-
-color:white;
-
-opacity:0;
-
-pointer-events:none;
-
-z-index:100;
-
-text-shadow:
-0 0 5px rgba(255,255,255,.2);
-
-transition:
-all 8s ease;
-
-}
-
-.fade{
-
-animation:
-fadeMap 8s forwards;
-
-}
-
-@keyframes fadeMap{
-
-0%{
-opacity:1;
-filter:blur(0);
-}
-
-100%{
-opacity:0;
-filter:blur(15px);
-}
-
-}
-
-</style>
-</head>
-<body>
-
-<div id="board">
-
-<div class="cell" data-id="1"></div>
-<div class="cell" data-id="2"></div>
-<div class="cell" data-id="3"></div>
-
-<div class="cell" data-id="4"></div>
-<div class="cell" data-id="5"></div>
-<div class="cell" data-id="6"></div>
-
-<div class="cell" data-id="7"></div>
-<div class="cell" data-id="8"></div>
-<div class="cell" data-id="9"></div>
-
-</div>
-
-<img src="images/piece1.jpg"
-id="p1"
-class="piece"
-data-id="1">
-
-<img src="images/piece2.jpg"
-id="p2"
-class="piece"
-data-id="2">
-
-<img src="images/piece3.jpg"
-id="p3"
-class="piece"
-data-id="3">
-
-<img src="images/piece4.jpg"
-id="p4"
-class="piece"
-data-id="4">
-
-<img src="images/piece5.jpg"
-id="p5"
-class="piece"
-data-id="5">
-
-<img src="images/piece6.jpg"
-id="p6"
-class="piece"
-data-id="6">
-
-<img src="images/piece7.jpg"
-id="p7"
-class="piece"
-data-id="7">
-
-<img src="images/piece8.jpg"
-id="p8"
-class="piece"
-data-id="8">
-
-<img src="images/piece9.jpg"
-id="p9"
-class="piece"
-data-id="9">
-
-<div id="letterA">
-A
-</div>
-  <script>
-
-let current = null;
-let offsetX = 0;
-let offsetY = 0;
-let completed = 0;
-
-document.querySelectorAll('.piece').forEach(piece=>{
-
-piece.addEventListener('touchstart',(e)=>{
-
-current = piece;
-
-current.style.zIndex = 999;
-
-const touch = e.touches[0];
-
-const rect =
-current.getBoundingClientRect();
-
-offsetX =
-touch.clientX - rect.left;
-
-offsetY =
-touch.clientY - rect.top;
-
-});
-
-});
-
-document.addEventListener(
-'touchmove',
-(e)=>{
-
-if(!current) return;
-
-e.preventDefault();
-
-const touch = e.touches[0];
-
-current.style.left =
-(touch.clientX - offsetX)
-+ 'px';
-
-current.style.top =
-(touch.clientY - offsetY)
-+ 'px';
-
-},
-{passive:false}
-);
-
-document.addEventListener(
-'touchend',
-()=>{
-
-if(!current) return;
-
-const pieceId =
-current.dataset.id;
-
-const target =
-document.querySelector(
-'.cell[data-id="' +
-pieceId +
-'"]'
-);
-
-const p =
-current.getBoundingClientRect();
-
-const t =
-target.getBoundingClientRect();
-
-const dx =
-Math.abs(
-p.left - t.left
-);
-
-const dy =
-Math.abs(
-p.top - t.top
-);
-
-if(
-dx < 80 &&
-dy < 80 &&
-!current.dataset.locked
-){
-
-target.appendChild(
-current
-);
-
-current.dataset.locked =
-"true";
-
-current.style.position =
-"static";
-
-current.style.width =
-"100%";
-
-current.style.height =
-"100%";
-
-current.style.left =
-"";
-
-current.style.top =
-"";
-
-current.style.transform =
-"none";
-
-current.style.zIndex =
-"1";
-
-completed++;
-
-if(completed === 9){
-
-setTimeout(()=>{
-
-document
-.getElementById("board")
-.classList
-.add("fade");
-
-const A =
-document
-.getElementById(
-"letterA"
-);
-
-A.style.opacity = "0.1";
-A.style.fontSize = "40px";
-
-setTimeout(()=>{
-
-A.style.opacity = "0.3";
-A.style.fontSize = "60px";
-
-},1000);
-
-setTimeout(()=>{
-
-A.style.opacity = "0.6";
-A.style.fontSize = "90px";
-
-A.style.textShadow =
-"0 0 30px white";
-
-},2500);
-
-setTimeout(()=>{
-
-A.style.opacity = "1";
-A.style.fontSize = "160px";
-
-},4500);
-
-setTimeout(()=>{
-
-A.style.fontSize = "260px";
-
-A.style.textShadow =
-"0 0 80px white";
-
-},6500);
-A.style.letterSpacing =
-"20px";
-
-},1000);
-
-}
-
-}
-
-current = null;
-
-});
-
-</script>
-
-</body>
-</html>
-  
-display:grid;
-
-grid-template-columns:
-repeat(3,1fr);
-
-grid-template-rows:
-repeat(3,1fr);
-
-}
-
-.cell{
-border:none;
-}
-
-/* القطع */
-
-.piece{
-
-position:absolute;
-
-width:110px;
-
-touch-action:none;
-
-user-select:none;
-
--webkit-user-drag:none;
-
-z-index:10;
-
-transition:
-transform .2s ease;
-
-filter:
-drop-shadow(
-0 8px 10px rgba(0,0,0,.5)
-);
-
-}
-
-.piece:active{
-
-transform:scale(1.05);
-
-}
-
-/* توزيع القطع */
-
-#p1{
-left:10px;
-top:50px;
-transform:rotate(-12deg);
-}
-
-#p2{
-left:25px;
-top:80px;
-transform:rotate(8deg);
-}
-
-#p3{
-left:15px;
-top:120px;
-transform:rotate(-5deg);
-}
-
-#p4{
-left:35px;
-top:160px;
-transform:rotate(12deg);
-}
-
-#p5{
-right:10px;
-top:50px;
-transform:rotate(10deg);
-}
-
-#p6{
-right:25px;
-top:80px;
-transform:rotate(-9deg);
-}
-
-#p7{
-right:15px;
-top:120px;
-transform:rotate(6deg);
-}
-
-#p8{
-right:35px;
-top:160px;
-transform:rotate(-12deg);
-}
-
-#p9{
-left:50%;
-top:30px;
-transform:
-translateX(-50%)
-rotate(5deg);
-}
+#p1{ left:10px; top:50px; transform:rotate(-12deg); }
+#p2{ left:25px; top:80px; transform:rotate(8deg); }
+#p3{ left:15px; top:120px; transform:rotate(-5deg); }
+#p4{ left:35px; top:160px; transform:rotate(12deg); }
+#p5{ right:10px; top:50px; transform:rotate(10deg); }
+#p6{ right:25px; top:80px; transform:rotate(-9deg); }
+#p7{ right:15px; top:120px; transform:rotate(6deg); }
+#p8{ right:35px; top:160px; transform:rotate(-12deg); }
+#p9{ left:50%; top:30px; transform:translateX(-50%) rotate(5deg); }
 
 /* حرف A */
 
@@ -556,43 +76,23 @@ position:fixed;
 left:50%;
 top:50%;
 transform:translate(-50%,-50%) scale(0.3);
-
 font-size:160px;
 color:white;
-
 opacity:0;
 filter:blur(20px);
-
 pointer-events:none;
 z-index:100;
-
 text-shadow:0 0 5px rgba(255,255,255,.2);
+transition: opacity 6s ease, filter 6s ease, transform 6s ease, text-shadow 6s ease;
+}
 
-transition:
-opacity 6s ease,
-filter 6s ease,
-transform 6s ease,
-text-shadow 6s ease;
-  }
 .fade{
-
-animation:
-fadeMap 8s forwards;
-
+animation:fadeMap 8s forwards;
 }
 
 @keyframes fadeMap{
-
-0%{
-opacity:1;
-filter:blur(0);
-}
-
-100%{
-opacity:0;
-filter:blur(15px);
-}
-
+0%{ opacity:1; filter:blur(0); }
+100%{ opacity:0; filter:blur(15px); }
 }
 
 </style>
@@ -600,234 +100,90 @@ filter:blur(15px);
 <body>
 
 <div id="board">
-
 <div class="cell" data-id="1"></div>
 <div class="cell" data-id="2"></div>
 <div class="cell" data-id="3"></div>
-
 <div class="cell" data-id="4"></div>
 <div class="cell" data-id="5"></div>
 <div class="cell" data-id="6"></div>
-
 <div class="cell" data-id="7"></div>
 <div class="cell" data-id="8"></div>
 <div class="cell" data-id="9"></div>
-
 </div>
 
-<img src="piece1.jpg"
-id="p1"
-class="piece"
-data-id="1">
+<img src="piece1.jpg" id="p1" class="piece" data-id="1">
+<img src="piece2.jpg" id="p2" class="piece" data-id="2">
+<img src="piece3.jpg" id="p3" class="piece" data-id="3">
+<img src="piece4.jpg" id="p4" class="piece" data-id="4">
+<img src="piece5.jpg" id="p5" class="piece" data-id="5">
+<img src="piece6.jpg" id="p6" class="piece" data-id="6">
+<img src="piece7.jpg" id="p7" class="piece" data-id="7">
+<img src="piece8.jpg" id="p8" class="piece" data-id="8">
+<img src="piece9.jpg" id="p9" class="piece" data-id="9">
 
-<img src="piece2.jpg"
-id="p2"
-class="piece"
-data-id="2">
+<div id="letterA">A</div>
 
-<img src="piece3.jpg"
-id="p3"
-class="piece"
-data-id="3">
-
-<img src="piece4.jpg"
-id="p4"
-class="piece"
-data-id="4">
-
-<img src="piece5.jpg"
-id="p5"
-class="piece"
-data-id="5">
-
-<img src="piece6.jpg"
-id="p6"
-class="piece"
-data-id="6">
-
-<img src="piece7.jpg"
-id="p7"
-class="piece"
-data-id="7">
-
-<img src="piece8.jpg"
-id="p8"
-class="piece"
-data-id="8">
-
-<img src="piece9.jpg"
-id="p9"
-class="piece"
-data-id="9">
-
-<div id="letterA">
-A
-</div>
-  <script>
-
+<script>
 let current = null;
 let offsetX = 0;
 let offsetY = 0;
 let completed = 0;
 
 document.querySelectorAll('.piece').forEach(piece=>{
-
-piece.addEventListener('touchstart',(e)=>{
-
-current = piece;
-
-current.style.zIndex = 999;
-
-const touch = e.touches[0];
-
-const rect =
-current.getBoundingClientRect();
-
-offsetX =
-touch.clientX - rect.left;
-
-offsetY =
-touch.clientY - rect.top;
-
+    piece.addEventListener('touchstart',(e)=>{
+        current = piece;
+        current.style.zIndex = 999;
+        const touch = e.touches[0];
+        const rect = current.getBoundingClientRect();
+        offsetX = touch.clientX - rect.left;
+        offsetY = touch.clientY - rect.top;
+    });
 });
 
+document.addEventListener('touchmove',(e)=>{
+    if(!current) return;
+    e.preventDefault();
+    const touch = e.touches[0];
+    current.style.left = (touch.clientX - offsetX) + 'px';
+    current.style.top = (touch.clientY - offsetY) + 'px';
+},{passive:false});
+
+document.addEventListener('touchend',()=>{
+    if(!current) return;
+    const pieceId = current.dataset.id;
+    const target = document.querySelector('.cell[data-id="' + pieceId + '"]');
+    const p = current.getBoundingClientRect();
+    const t = target.getBoundingClientRect();
+    const dx = Math.abs(p.left - t.left);
+    const dy = Math.abs(p.top - t.top);
+
+    if(dx < 80 && dy < 80 && !current.dataset.locked){
+        target.appendChild(current);
+        current.dataset.locked = "true";
+        current.style.position = "static";
+        current.style.width = "100%";
+        current.style.height = "100%";
+        current.style.left = "";
+        current.style.top = "";
+        current.style.transform = "none";
+        current.style.zIndex = "1";
+        completed++;
+
+        if(completed === 9){
+            setTimeout(()=>{
+                document.getElementById("board").classList.add("fade");
+                const A = document.getElementById("letterA");
+                A.style.opacity = "1";
+                A.style.transform = "translate(-50%,-50%) scale(1)";
+                A.style.filter = "blur(0px)";
+                A.style.textShadow = "0 0 80px white";
+                A.style.letterSpacing = "20px";
+            },1000);
+        }
+    }
+    current = null;
 });
-
-document.addEventListener(
-'touchmove',
-(e)=>{
-
-if(!current) return;
-
-e.preventDefault();
-
-const touch = e.touches[0];
-
-current.style.left =
-(touch.clientX - offsetX)
-+ 'px';
-
-current.style.top =
-(touch.clientY - offsetY)
-+ 'px';
-
-},
-{passive:false}
-);
-
-document.addEventListener(
-'touchend',
-()=>{
-
-if(!current) return;
-
-const pieceId =
-current.dataset.id;
-
-const target =
-document.querySelector(
-'.cell[data-id="' +
-pieceId +
-'"]'
-);
-
-const p =
-current.getBoundingClientRect();
-
-const t =
-target.getBoundingClientRect();
-
-const dx =
-Math.abs(
-p.left - t.left
-);
-
-const dy =
-Math.abs(
-p.top - t.top
-);
-
-if(
-dx < 80 &&
-dy < 80 &&
-!current.dataset.locked
-){
-
-target.appendChild(
-current
-);
-
-current.dataset.locked =
-"true";
-
-current.style.position =
-"static";
-
-current.style.width =
-"100%";
-
-current.style.height =
-"100%";
-
-current.style.left =
-"";
-
-current.style.top =
-"";
-
-current.style.transform =
-"none";
-
-current.style.zIndex =
-"1";
-
-completed++;
-
-if(completed === 9){
-
-setTimeout(()=>{
-
-document
-.getElementById("board")
-.classList
-.add("fade");
-
-const A =
-document
-.getElementById(
-"letterA"
-);
-
-A.style.opacity = "0.1";
-A.style.opacity = "1";
-
-A.style.transform =
-"translate(-50%,-50%) scale(1)";
-
-A.style.filter =
-"blur(0px)";
-
-A.style.textShadow =
-"0 0 80px white";
-A.style.textShadow =
-"0 0 80px white";
-
-},6500);
-A.style.letterSpacing =
-"20px";
-
-},1000);
-
-}
-
-}
-
-current = null;
-
-});
-
 </script>
 
 </body>
 </html>
-  
