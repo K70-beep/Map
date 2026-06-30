@@ -259,6 +259,13 @@ A
   
   
   <script>
+    document.addEventListener("click", () => {
+  const music = document.getElementById("mapMusic");
+
+  if (music) {
+    music.play().catch(()=>{});
+  }
+}, {once:true});
   
 let current = null;
 let offsetX = 0;
@@ -458,5 +465,12 @@ current = null;
 });
 
 </script>
+  <audio id="mapMusic" loop>
+  <source src="map.mp3" type="audio/mpeg">
+</audio>
+
+<audio id="aMusic">
+  <source src="reveal.mp3" type="audio/mpeg">
+</audio>
 </body>
 </html>
