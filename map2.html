@@ -142,24 +142,32 @@ rotate(5deg);
 /* حرف A */
 
 #letterA{
+
 position:fixed;
+
 left:50%;
 top:50%;
+
 transform:translate(-50%,-50%);
 
 font-size:30px;
+
 color:white;
 
 opacity:0;
 
 pointer-events:none;
 
-z-index:9999;
+z-index:100;
 
-text-shadow:0 0 5px rgba(255,255,255,.2);
+text-shadow:
+0 0 5px rgba(255,255,255,.2);
 
-transition:all 8s ease;
+transition:
+all 8s ease;
+
 }
+
 .fade{
 
 animation:
@@ -248,18 +256,9 @@ data-id="9">
 
 <div id="letterA">
 A
-</di>v
-  
-  
+</div>
   <script>
-    document.addEventListener("click", () => {
-  const music = document.getElementById("mapMusic");
 
-  if (music) {
-    music.play().catch(()=>{});
-  }
-}, {once:true});
-  
 let current = null;
 let offsetX = 0;
 let offsetY = 0;
@@ -379,21 +378,6 @@ current.style.zIndex =
 completed++;
 
 if(completed === 9){
-  const mapMusic =
-document.getElementById("mapMusic");
-
-const reveal =
-document.getElementById("aMusic");
-
-mapMusic.volume = 0.2;
-
-setTimeout(()=>{
-
-mapMusic.pause();
-
-reveal.play();
-
-},1500);
 
 setTimeout(()=>{
 
@@ -443,7 +427,6 @@ A.style.textShadow =
 "0 0 80px white";
 
 },6500);
-
 A.style.letterSpacing =
 "20px";
 
@@ -458,12 +441,7 @@ current = null;
 });
 
 </script>
-  <audio id="mapMusic" loop>
-  <source src="audio/map.mp3" type="audio/mpeg">
-</audio>
 
-<audio id="aMusic">
-  <source src="audio/reveal.mp3" type="audio/mpeg">
-</audio>
 </body>
 </html>
+  
