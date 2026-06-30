@@ -142,32 +142,28 @@ rotate(5deg);
 /* حرف A */
 
 #letterA{
-
 position:fixed;
-
 left:50%;
 top:50%;
+transform:translate(-50%,-50%) scale(0.3);
 
-transform:translate(-50%,-50%);
-
-font-size:30px;
-
+font-size:160px;
 color:white;
 
 opacity:0;
+filter:blur(20px);
 
 pointer-events:none;
-
 z-index:100;
 
-text-shadow:
-0 0 5px rgba(255,255,255,.2);
+text-shadow:0 0 5px rgba(255,255,255,.2);
 
 transition:
-all 8s ease;
-
-}
-
+opacity 6s ease,
+filter 6s ease,
+transform 6s ease,
+text-shadow 6s ease;
+  }
 .fade{
 
 animation:
@@ -393,36 +389,16 @@ document
 );
 
 A.style.opacity = "0.1";
-A.style.fontSize = "40px";
+A.style.opacity = "1";
 
-setTimeout(()=>{
+A.style.transform =
+"translate(-50%,-50%) scale(1)";
 
-A.style.opacity = "0.3";
-A.style.fontSize = "60px";
-
-},1000);
-
-setTimeout(()=>{
-
-A.style.opacity = "0.6";
-A.style.fontSize = "90px";
+A.style.filter =
+"blur(0px)";
 
 A.style.textShadow =
-"0 0 30px white";
-
-},2500);
-
-setTimeout(()=>{
-
-A.style.opacity = "1";
-A.style.fontSize = "160px";
-
-},4500);
-
-setTimeout(()=>{
-
-A.style.fontSize = "260px";
-
+"0 0 80px white";
 A.style.textShadow =
 "0 0 80px white";
 
