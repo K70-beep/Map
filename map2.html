@@ -142,32 +142,24 @@ rotate(5deg);
 /* حرف A */
 
 #letterA{
-
 position:fixed;
-
 left:50%;
 top:50%;
-
 transform:translate(-50%,-50%);
 
 font-size:30px;
-
 color:white;
 
-opacity:1;
-font-size:160px;
+opacity:0;
 
 pointer-events:none;
 
-z-index:100;
+z-index:9999;
 
-text-shadow:
-0 0 5px rgba(255,255,255,.2);
+text-shadow:0 0 5px rgba(255,255,255,.2);
 
 transition:all 8s ease;
 }
-/* اختفاء الخريطة */
-
 .fade{
 
 animation:
@@ -209,54 +201,54 @@ filter:blur(15px);
 
 </div>
 
-<img src="piece1.jpg"
+<img src="images/piece1.jpg"
 id="p1"
 class="piece"
 data-id="1">
 
-<img src="piece2.jpg"
+<img src="images/piece2.jpg"
 id="p2"
 class="piece"
 data-id="2">
 
-<img src="piece3.jpg"
+<img src="images/piece3.jpg"
 id="p3"
 class="piece"
 data-id="3">
 
-<img src="piece4.jpg"
+<img src="images/piece4.jpg"
 id="p4"
 class="piece"
 data-id="4">
 
-<img src="piece5.jpg"
+<img src="images/piece5.jpg"
 id="p5"
 class="piece"
 data-id="5">
 
-<img src="piece6.jpg"
+<img src="images/piece6.jpg"
 id="p6"
 class="piece"
 data-id="6">
 
-<img src="piece7.jpg"
+<img src="images/piece7.jpg"
 id="p7"
 class="piece"
 data-id="7">
 
-<img src="piece8.jpg"
+<img src="images/piece8.jpg"
 id="p8"
 class="piece"
 data-id="8">
 
-<img src="piece9.jpg"
+<img src="images/piece9.jpg"
 id="p9"
 class="piece"
 data-id="9">
 
 <div id="letterA">
 A
-</div>
+</di>v
   
   
   <script>
@@ -467,11 +459,11 @@ current = null;
 
 </script>
   <audio id="mapMusic" loop>
-  <source src="map.mp3" type="audio/mpeg">
+  <source src="audio/map.mp3" type="audio/mpeg">
 </audio>
 
 <audio id="aMusic">
-  <source src="reveal.mp3" type="audio/mpeg">
+  <source src="audio/reveal.mp3" type="audio/mpeg">
 </audio>
 </body>
 </html>
